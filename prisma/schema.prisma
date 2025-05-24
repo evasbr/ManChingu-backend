@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id_user                        String                          @id @default(uuid())
+  name                      String
+  username                      String                          @unique
+  email                         String                          @unique
+  password                      String
+  photo_profile                 String?
+  deleted_at                    DateTime? 
+  created_at        DateTime    @default(now())
+  updated_at        DateTime    @updatedAt                      
+
+  // Bookmark Bookmark[] @relation("user_has_bookmark")
+  // Review Review[] @relation("user_has_review")
+}
+
+// model Comic {
+//   id_comic      String      @id @default(uuid())
+//   name          String      @unique
+
+
+
+//   bookmark      Bookmark[] @relation("comic_bookmark")
+//   review        Review[] @relation("comic_has_review")
+// }
+
+// model Bookmark {
+//   id_bookmark  String    @id @default(uuid())
+//   id_user      String
+//   id_comic     String
+//   status       BookmarkStatus
+
+//   user        User    @relation("user_has_bookmark", references: [id_user], fields: [id_user])
+//   comic       Comic   @relation("comic_bookmark", references: [id_comic], fields: [id_comic])
+
+//   @@unique([id_user, id_comic])
+// }
+
+// model Review {
+//   id_review   String    @id @default(uuid())
+//   id_user     String
+//   id_comic    String
+//   rating      Int
+//   review_text String?
+
+//   user        User      @relation("user_has_review", references: [id_user], fields: [id_user])
+//   comic       Comic     @relation("comic_has_review", references: [id_comic], fields: [id_comic])
+// }
+
+
+// enum BookmarkStatus {
+//   TO_READ
+//   FINISHED
+//   ON_GOING
+// }
+
