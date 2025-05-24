@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  // output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -15,57 +14,85 @@ datasource db {
 }
 
 model User {
-  id_user                        String                          @id @default(uuid())
-  name                      String
-  username                      String                          @unique
-  email                         String                          @unique
-  password                      String
-  photo_profile                 String?
-  deleted_at                    DateTime? 
+  id_user           String      @id @default(uuid())
+  username          String      @unique
+  email             String      @unique
+  password          String
+  deleted_at        DateTime? 
   created_at        DateTime    @default(now())
   updated_at        DateTime    @updatedAt                      
 
-  // Bookmark Bookmark[] @relation("user_has_bookmark")
-  // Review Review[] @relation("user_has_review")
+  Bookmark Bookmark[] @relation("user_has_bookmark")
+  Review Review[] @relation("user_has_review")
 }
 
-// model Comic {
-//   id_comic      String      @id @default(uuid())
-//   name          String      @unique
+model Genre {
+  id_genre      String  @id @default(uuid())
+  name          String
 
+  comicGenre ComicGenre[] @relation("genre_in_comic")
+}
 
+model Comic {
+  id_comic      String      @id @default(uuid())
+  name          String      @unique
+  synopsis      String?
+  author        String?
+  artist        String?
+  status        ComicStatus @default(ON_GOING)
+  poster        String
 
-//   bookmark      Bookmark[] @relation("comic_bookmark")
-//   review        Review[] @relation("comic_has_review")
-// }
+  bookmark      Bookmark[] @relation("comic_bookmark")
+  review        Review[] @relation("comic_has_review")
+  comicGenre ComicGenre[] @relation("comic_has_genre")
+}
 
-// model Bookmark {
-//   id_bookmark  String    @id @default(uuid())
-//   id_user      String
-//   id_comic     String
-//   status       BookmarkStatus
+model ComicGenre {
+  id_comic_genre      String    @id @default(uuid())
+  id_comic            String
+  id_genre            String
 
-//   user        User    @relation("user_has_bookmark", references: [id_user], fields: [id_user])
-//   comic       Comic   @relation("comic_bookmark", references: [id_comic], fields: [id_comic])
+  comic               Comic @relation("comic_has_genre", fields: [id_comic], references: [id_comic])
+  genre               Genre @relation("genre_in_comic", fields: [id_genre], references: [id_genre])
+}
 
-//   @@unique([id_user, id_comic])
-// }
+model Bookmark {
+  id_bookmark  String    @id @default(uuid())
+  id_user      String
+  id_comic     String
+  status       BookmarkStatus
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @updatedAt
+  deleted_at   DateTime?
 
-// model Review {
-//   id_review   String    @id @default(uuid())
-//   id_user     String
-//   id_comic    String
-//   rating      Int
-//   review_text String?
+  user        User    @relation("user_has_bookmark", references: [id_user], fields: [id_user])
+  comic       Comic   @relation("comic_bookmark", references: [id_comic], fields: [id_comic])
 
-//   user        User      @relation("user_has_review", references: [id_user], fields: [id_user])
-//   comic       Comic     @relation("comic_has_review", references: [id_comic], fields: [id_comic])
-// }
+  @@unique([id_user, id_comic])
+}
 
+model Review {
+  id_review     String    @id @default(uuid())
+  id_user       String
+  id_comic      String
+  rating        Int
+  review_text   String?
+  created_at    DateTime   @default(now())
+  updated_at    DateTime   @updatedAt
+  deleted_at    DateTime?
 
-// enum BookmarkStatus {
-//   TO_READ
-//   FINISHED
-//   ON_GOING
-// }
+  user        User      @relation("user_has_review", references: [id_user], fields: [id_user])
+  comic       Comic     @relation("comic_has_review", references: [id_comic], fields: [id_comic])
+}
 
+enum BookmarkStatus {
+  COMPLETED
+  READING
+  DROPPED
+  PLAN_TO_READ
+}
+
+enum ComicStatus {
+  COMPLETED
+  ON_GOING
+}
