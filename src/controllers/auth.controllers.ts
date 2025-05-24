@@ -69,7 +69,7 @@ export const login = async (
     const { password: pass, ...userToSend } = userData;
 
     const token = jwt.sign(
-      { id: userData.id_user, email: userData.email },
+      { id_user: userData.id_user, email: userData.email },
       JWT_SECRET,
       { expiresIn: "7d" }
     );
