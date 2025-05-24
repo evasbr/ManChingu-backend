@@ -41,6 +41,12 @@ model Comic {
   artist        String?
   status        ComicStatus @default(ON_GOING)
   poster        String
+  rating        Int         @default(0)
+  bookmarked    Int         @default(0)
+
+  deleted_at    DateTime?
+  updated_at    DateTime    @updatedAt
+  created_at    DateTime    @default(now())
 
   bookmark      Bookmark[] @relation("comic_bookmark")
   review        Review[] @relation("comic_has_review")

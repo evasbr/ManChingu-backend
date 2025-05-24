@@ -5,7 +5,7 @@ const validateRequest =
   (schema: AnyZodObject) =>
   (req: Request, res: Response, next: NextFunction) => {
     try {
-      schema.parse(req.body);
+      req.validatedData = schema.parse(req.body);
       next();
     } catch (err: any) {
       res.status(400).json({

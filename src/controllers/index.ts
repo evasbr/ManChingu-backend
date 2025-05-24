@@ -1,3 +1,19 @@
 import { register, login } from "./auth.controllers";
 
-export { register, login };
+import {
+  addNewComic,
+  updateComicById,
+  deleteComicById,
+  getAllComic,
+  getComicById,
+} from "./comic.controllers";
+
+export {
+  register,
+  login,
+  addNewComic,
+  updateComicById,
+  deleteComicById,
+  getAllComic,
+  getComicById,
+};
