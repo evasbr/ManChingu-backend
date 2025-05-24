@@ -8,6 +8,8 @@ import {
   getComicById,
 } from "./comic.controllers";
 
+import { configureComicGenre } from "./comicGenre.controllers";
+
 export {
   register,
   login,
@@ -16,4 +18,5 @@ export {
   deleteComicById,
   getAllComic,
   getComicById,
+  configureComicGenre,
 };
