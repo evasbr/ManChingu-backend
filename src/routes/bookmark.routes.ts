@@ -6,6 +6,7 @@ import {
   getBookmarkById,
   getAllBookmarkByUserId,
   getBookmarkByComicId,
+  getAllMyBookmark
 } from "../controllers/index.js";
 import catchAsync from "../utils/catchAsync.js";
 import {
@@ -18,8 +19,14 @@ import validateQuery from "../middlewares/validateQuery.js";
 const router = Router();
 
 router.get(
-  "/all/:userId",
+  "/my",
   authMiddleware,
+  validateQuery(bookmarkQuerySchema),
+  catchAsync(getAllMyBookmark)
+);
+
+router.get(
+  "/all/:userId",
   validateQuery(bookmarkQuerySchema),
   catchAsync(getAllBookmarkByUserId)
 );

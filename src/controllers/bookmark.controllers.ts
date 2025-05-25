@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import ClientError from "../handler/ClientError";
 import { BookmarkStatus } from "@prisma/client";
-import bookmarkQueries from "../queries/bookmark.queries";
-import { ComicQueries } from "../queries";
+import { ComicQueries, BookmarkQueries } from "../queries/index.js";
 
 const addBookmark = async (req: Request, res: Response, next: NextFunction) => {
   const comicId = req.params.comicId;
@@ -15,7 +14,16 @@ const addBookmark = async (req: Request, res: Response, next: NextFunction) => {
     throw new ClientError("Comic not found", 404);
   }
 
-  const data = await bookmarkQueries.addBookmark(comicId, userId, status);
+  const bookmarkData = await BookmarkQueries.getBookmarkByComicId(
+    comicId,
+    userId
+  );
+
+  if (bookmarkData) {
+    throw new ClientError("You already has bookmarked this comic", 400);
+  }
+
+  const data = await BookmarkQueries.addBookmark(comicId, userId, status);
 
   if (!data) {
     throw new ClientError("Failed to bookmark a manhwa", 400);
@@ -37,7 +45,7 @@ const updateBookmarkStatus = async (
   const status = req.validatedQuery.status;
   const userId = req.user.id_user;
 
-  const bookmarkData = await bookmarkQueries.getBookmarkById(bookmarkId);
+  const bookmarkData = await BookmarkQueries.getBookmarkById(bookmarkId);
 
   if (!bookmarkData) {
     throw new ClientError("Bookmark not found", 404);
@@ -47,7 +55,7 @@ const updateBookmarkStatus = async (
     throw new ClientError("You are not authorized for this bookmark", 403);
   }
 
-  const data = await bookmarkQueries.updateBookmarkStatus(bookmarkId, status);
+  const data = await BookmarkQueries.updateBookmarkStatus(bookmarkId, status);
 
   return {
     statusCode: 200,
@@ -65,7 +73,7 @@ const deleteBookmark = async (
 
   const userId = req.user.id_user;
 
-  const bookmarkData = await bookmarkQueries.getBookmarkById(bookmarkId);
+  const bookmarkData = await BookmarkQueries.getBookmarkById(bookmarkId);
 
   if (!bookmarkData) {
     throw new ClientError("Bookmark not found", 404);
@@ -75,7 +83,7 @@ const deleteBookmark = async (
     throw new ClientError("You are not authorized for this bookmark", 403);
   }
 
-  const data = await bookmarkQueries.deleteBookmark(bookmarkId);
+  const data = await BookmarkQueries.deleteBookmark(bookmarkId);
 
   if (!data) {
     throw new ClientError("Bookmark failed to be deleted");
@@ -94,7 +102,7 @@ const getBookmarkById = async (
 ) => {
   const bookmarkId = req.params.bookmarkId;
 
-  const data = await bookmarkQueries.getBookmarkById(bookmarkId);
+  const data = await BookmarkQueries.getBookmarkById(bookmarkId);
 
   return {
     statusCode: 200,
@@ -110,7 +118,7 @@ const getBookmarkByComicId = async (
   const comicId = req.params.comicId;
   const userId = req.user.id_user;
 
-  const data = await bookmarkQueries.getBookmarkByComicId(comicId, userId);
+  const data = await BookmarkQueries.getBookmarkByComicId(comicId, userId);
 
   return {
     statusCode: 200,
@@ -124,6 +132,31 @@ const getAllBookmarkByUserId = async (
   res: Response,
   next: NextFunction
 ) => {
+  const userId = req.params.userId;
+  const {
+    status,
+    key,
+  }: { status: BookmarkStatus | undefined; key: string | undefined } =
+    req.validatedQuery;
+
+  const data = await BookmarkQueries.getAllBookmarkByUserId(
+    userId,
+    status,
+    key
+  );
+
+  return {
+    statusCode: 200,
+    data,
+  };
+};
+
+// Can add filter by status and key(manwha title)
+const getAllMyBookmark = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const userId = req.user.id_user;
   const {
     status,
@@ -131,7 +164,7 @@ const getAllBookmarkByUserId = async (
   }: { status: BookmarkStatus | undefined; key: string | undefined } =
     req.validatedQuery;
 
-  const data = await bookmarkQueries.getAllBookmarkByUserId(
+  const data = await BookmarkQueries.getAllBookmarkByUserId(
     userId,
     status,
     key
@@ -150,4 +183,5 @@ export {
   getBookmarkById,
   getAllBookmarkByUserId,
   getBookmarkByComicId,
+  getAllMyBookmark,
 };

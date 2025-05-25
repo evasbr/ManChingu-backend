@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { AuthQueries } from "../queries/index.js";
 import { UserCreate } from "../types/user.schema.js";
-import ClientError from "../handler/ClientError";
+import ClientError from "../handler/ClientError.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 

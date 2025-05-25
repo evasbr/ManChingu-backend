@@ -7,6 +7,7 @@ import {
 } from "../types/comic.schema.js";
 import z from "zod";
 import paginate from "./pagination.queries.js";
+import ClientError from "../handler/ClientError.js";
 
 export const comicSelected = {
   id_comic: true,
@@ -28,6 +29,7 @@ export const comicSelected = {
   created_at: true,
   updated_at: true,
   rating: true,
+  rating_count: true,
   bookmarked: true,
 };
 
@@ -140,6 +142,39 @@ class Comic {
     };
 
     return result;
+  };
+
+  updateComicRating = async (comicId: string, rating: number) => {
+    const oldComic = await this.getComicById(comicId);
+    if (!oldComic) {
+      throw new ClientError("Comic not found", 404);
+    }
+    const newRatingCount = oldComic.rating_count + 1;
+    const newRating =
+      (oldComic.rating * oldComic.rating_count + rating) / newRatingCount;
+
+    return await prisma.comic.update({
+      where: {
+        id_comic: comicId,
+      },
+      data: {
+        rating: newRating,
+        rating_count: newRatingCount,
+      },
+    });
+  };
+
+  updateComicBookmark = async (comicId: string) => {
+    return await prisma.comic.update({
+      where: {
+        id_comic: comicId,
+      },
+      data: {
+        bookmarked: {
+          increment: 1,
+        },
+      },
+    });
   };
 }
 

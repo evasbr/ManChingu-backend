@@ -1,6 +1,7 @@
 import ClientError from "../handler/ClientError.js";
 import { BookmarkStatus } from "../types/bookmark.schema.js";
 import { comicSelected, flattenComic } from "./comic.queries.js";
+import { ComicQueries } from "./index.js";
 import prisma from "./prisma.js";
 
 const selectedBookmark = {
@@ -18,23 +19,36 @@ const selectedBookmark = {
 
 class Bookmark {
   addBookmark = async (
-    comidId: string,
+    comicId: string,
     userId: string,
     status: BookmarkStatus = "READING"
   ) => {
-    const data = await prisma.bookmark.create({
-      data: {
-        id_comic: comidId,
-        id_user: userId,
-        status,
-      },
-      select: selectedBookmark,
-    });
+    const result = await prisma.$transaction(async (tx) => {
+      const data = await tx.bookmark.create({
+        data: {
+          id_comic: comicId,
+          id_user: userId,
+          status,
+        },
+        select: selectedBookmark,
+      });
 
-    const result = {
-      ...data,
-      comic: flattenComic(data.comic),
-    };
+      await tx.comic.update({
+        where: {
+          id_comic: comicId,
+        },
+        data: {
+          bookmarked: {
+            increment: 1,
+          },
+        },
+      });
+
+      return {
+        ...data,
+        comic: flattenComic(data.comic),
+      };
+    });
 
     return result;
   };

@@ -8,6 +8,8 @@ import {
   getComicById,
 } from "./comic.controllers";
 
+import { getMyProfile, getProfileById } from "./user.controllers.js";
+
 import { configureComicGenre } from "./comicGenre.controllers.js";
 
 import {
@@ -17,7 +19,17 @@ import {
   getBookmarkById,
   getAllBookmarkByUserId,
   getBookmarkByComicId,
+  getAllMyBookmark,
 } from "./bookmark.controllers.js";
+
+import {
+  addRating,
+  updateRating,
+  deleteRating,
+  getAllRatingByUserId,
+  getAllRatingForComic,
+  getRatingById,
+} from "./rating.controllers.js";
 
 export {
   register,
@@ -30,8 +42,17 @@ export {
   configureComicGenre,
   addBookmark,
   updateBookmarkStatus,
+  getAllMyBookmark,
   deleteBookmark,
   getBookmarkById,
   getAllBookmarkByUserId,
   getBookmarkByComicId,
+  addRating,
+  updateRating,
+  deleteRating,
+  getAllRatingByUserId,
+  getAllRatingForComic,
+  getRatingById,
+  getMyProfile,
+  getProfileById,
 };
