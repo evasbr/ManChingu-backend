@@ -7,6 +7,8 @@ declare global {
     interface Request {
       user?: UserType; // atau 'any' jika belum punya tipe pasti
       validatedData?: AnyZodObject;
+      // validatedQuery?: AnyZodObject;
+      validatedQuery?: z.infer<AnyZodObject>;
     }
   }
 }
