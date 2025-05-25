@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import ClientError from "../handler/ClientError";
-import { ComicGenreQueries, ComicQueries } from "../queries";
+import ClientError from "../handler/ClientError.js";
+import { ComicGenreQueries, ComicQueries } from "../queries/index.js";
 
 async function configureComicGenre(
   req: Request,

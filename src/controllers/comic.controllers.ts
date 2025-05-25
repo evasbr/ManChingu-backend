@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { ComicQueries } from "../queries";
-import ClientError from "../handler/ClientError";
+import { ComicQueries } from "../queries/index.js";
+import ClientError from "../handler/ClientError.js";
 
 const addNewComic = async (req: Request, res: Response, next: NextFunction) => {
   const { name, synopsis, author, artist, status, poster } = req.validatedData;

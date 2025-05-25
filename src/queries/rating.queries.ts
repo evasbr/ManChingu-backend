@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { ComicQueries } from "./index.js";
-import ClientError from "../handler/ClientError";
+import ClientError from "../handler/ClientError.js";
 const prisma = new PrismaClient();
 
 class Rating {

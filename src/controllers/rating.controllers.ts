@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { RatingQueries } from "../queries";
-import ClientError from "../handler/ClientError";
+import { RatingQueries } from "../queries/index.js";
+import ClientError from "../handler/ClientError.js";
 
 const addRating = async (req: Request, res: Response, next: NextFunction) => {
   const userId = req.user!.id_user;

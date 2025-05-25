@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import ClientError from "../handler/ClientError";
-import { UserQueries } from "../queries";
+import ClientError from "../handler/ClientError.js";
+import { UserQueries } from "../queries/index.js";
 
 async function getMyProfile(req: Request, res: Response, next: NextFunction) {
   const userId = req.user.id_user;

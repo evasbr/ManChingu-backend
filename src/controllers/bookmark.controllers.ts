@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import ClientError from "../handler/ClientError";
+import ClientError from "../handler/ClientError.js";
 import { BookmarkStatus } from "@prisma/client";
 import { ComicQueries, BookmarkQueries } from "../queries/index.js";
 
