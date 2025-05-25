@@ -8,7 +8,7 @@ import {
 import z from "zod";
 import paginate from "./pagination.queries.js";
 
-const comicSelected = {
+export const comicSelected = {
   id_comic: true,
   name: true,
   synopsis: true,
@@ -31,7 +31,7 @@ const comicSelected = {
   bookmarked: true,
 };
 
-type RawComicFromPrisma = {
+export type RawComicFromPrisma = {
   id_comic: string;
   name: string;
   synopsis?: string | null;
@@ -79,6 +79,7 @@ class Comic {
     const data = await prisma.comic.update({
       where: {
         id_comic,
+        deleted_at: null,
       },
       data: comic,
       select: comicSelected,
@@ -91,6 +92,7 @@ class Comic {
     const data = await prisma.comic.update({
       where: {
         id_comic,
+        deleted_at: null,
       },
       data: {
         deleted_at: new Date(),
@@ -104,6 +106,7 @@ class Comic {
     const data = await prisma.comic.findUnique({
       where: {
         id_comic,
+        deleted_at: null,
       },
       select: comicSelected,
     });

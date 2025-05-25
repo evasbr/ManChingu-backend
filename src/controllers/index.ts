@@ -1,4 +1,4 @@
-import { register, login } from "./auth.controllers";
+import { register, login } from "./auth.controllers.js";
 
 import {
   addNewComic,
@@ -8,7 +8,16 @@ import {
   getComicById,
 } from "./comic.controllers";
 
-import { configureComicGenre } from "./comicGenre.controllers";
+import { configureComicGenre } from "./comicGenre.controllers.js";
+
+import {
+  addBookmark,
+  updateBookmarkStatus,
+  deleteBookmark,
+  getBookmarkById,
+  getAllBookmarkByUserId,
+  getBookmarkByComicId,
+} from "./bookmark.controllers.js";
 
 export {
   register,
@@ -19,4 +28,10 @@ export {
   getAllComic,
   getComicById,
   configureComicGenre,
+  addBookmark,
+  updateBookmarkStatus,
+  deleteBookmark,
+  getBookmarkById,
+  getAllBookmarkByUserId,
+  getBookmarkByComicId,
 };

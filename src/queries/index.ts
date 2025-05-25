@@ -1,3 +1,7 @@
 import AuthQueries from "./auth.queries.js";
 
-export { AuthQueries };
+import ComicQueries from "./comic.queries.js";
+
+import ComicGenreQueries from "./comicGenre.queries.js";
+
+export { AuthQueries, ComicQueries, ComicGenreQueries };
