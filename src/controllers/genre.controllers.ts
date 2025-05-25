@@ -16,7 +16,7 @@ async function getAllCategories(
 }
 
 async function addCategory(req: Request, res: Response, next: NextFunction) {
-  const genre = req.body.genre;
+  const genre = req.body.name;
 
   const data = await GenreQueries.addGenre(genre);
 
