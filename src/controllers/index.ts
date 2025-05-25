@@ -31,6 +31,13 @@ import {
   getRatingById,
 } from "./rating.controllers.js";
 
+import {
+  getAllCategories,
+  searchCategory,
+  deleteCategory,
+  addCategory,
+} from "./genre.controllers.js";
+
 export {
   register,
   login,
@@ -55,4 +62,8 @@ export {
   getRatingById,
   getMyProfile,
   getProfileById,
+  getAllCategories,
+  searchCategory,
+  deleteCategory,
+  addCategory,
 };

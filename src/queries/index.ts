@@ -10,6 +10,8 @@ import BookmarkQueries from "./bookmark.queries.js";
 
 import RatingQueries from "./rating.queries.js";
 
+import GenreQueries from "./genre.queries.js";
+
 export {
   AuthQueries,
   ComicQueries,
@@ -17,4 +19,5 @@ export {
   BookmarkQueries,
   RatingQueries,
   UserQueries,
+  GenreQueries,
 };
