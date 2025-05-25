@@ -1,6 +1,6 @@
 import express from "express";
-import ErrorHandling from "../src/handler/error-handler.js";
-import Router from "../src/routes/index.js";
+import ErrorHandling from "../handler/error-handler.js";
+import Router from "../routes/index.js";
 
 const app = express();
 app.use(express.json());

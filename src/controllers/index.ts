@@ -6,7 +6,7 @@ import {
   deleteComicById,
   getAllComic,
   getComicById,
-} from "./comic.controllers";
+} from "./comic.controllers.js";
 
 import { getMyProfile, getProfileById } from "./user.controllers.js";
 
