@@ -74,6 +74,23 @@ class Bookmark {
     return result;
   };
 
+  checkIfUserHasBookmarkByComicId = async (comicId: string, userId: string) => {
+    const data = await prisma.bookmark.findFirst({
+      where: {
+        id_comic: comicId,
+        id_user: userId,
+        deleted_at: null,
+      },
+      select: selectedBookmark,
+    });
+
+    if (data !== null) {
+      throw new ClientError("You already has bookmark for this comic", 404);
+    }
+
+    return null;
+  };
+
   getBookmarkByComicId = async (comicId: string, userId: string) => {
     const data = await prisma.bookmark.findFirst({
       where: {

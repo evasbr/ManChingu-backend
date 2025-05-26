@@ -9,17 +9,16 @@ const addBookmark = async (req: Request, res: Response, next: NextFunction) => {
   let status = req.validatedQuery.status;
 
   const comicData = await ComicQueries.getComicById(comicId);
-
   if (!comicData) {
     throw new ClientError("Comic not found", 404);
   }
 
-  const bookmarkData = await BookmarkQueries.getBookmarkByComicId(
+  const bookmarkData = await BookmarkQueries.checkIfUserHasBookmarkByComicId(
     comicId,
     userId
   );
 
-  if (bookmarkData) {
+  if (bookmarkData !== null) {
     throw new ClientError("You already has bookmarked this comic", 400);
   }
 
