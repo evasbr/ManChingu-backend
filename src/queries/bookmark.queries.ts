@@ -134,11 +134,24 @@ class Bookmark {
   };
 
   deleteBookmark = async (bookmarkId: string) => {
-    return await prisma.bookmark.delete({
-      where: {
-        id_bookmark: bookmarkId,
-        deleted_at: null,
-      },
+    return await prisma.$transaction(async (tx) => {
+      const data = await tx.bookmark.delete({
+        where: {
+          id_bookmark: bookmarkId,
+          deleted_at: null,
+        },
+      });
+
+      await tx.comic.update({
+        where: { id_comic: data.id_comic },
+        data: {
+          bookmarked: {
+            decrement: 1,
+          },
+        },
+      });
+
+      return data;
     });
   };
 
